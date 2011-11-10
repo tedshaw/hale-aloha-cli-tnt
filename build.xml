@@ -1,0 +1,123 @@
+<project name="wattdepot-katas-tedshaw" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>
+  Top-level build file for the WattDepot simpleapp system. 
+  The default target compiles the system.
+  </description>
+
+  <import file="common.build.xml" />
+  
+  <property name="junit.version" value="4.9"/>
+  <property name="wattdepot.version" value="1.5.1015"/>
+
+  <target name="install-libraries" description="Install JUnit and Robocode service libraries.">
+    <ivy:retrieve organisation="org.junit" module="junit" revision="${junit.version}" 
+      pattern="${lib.dir}/junit/[artifact].[ext]" inline="true" conf="default" 
+      log="download-only" transitive="false" type="jar" />
+    <!-- Define the path to the JUnit jar file needed to compile/test these sources. -->
+    <path id="junit.path" location="${lib.dir}/junit/junit.jar" />
+    
+    <ivy:retrieve organisation="org.wattdepot" module="wattdepot" revision="${wattdepot.version}" pattern="${lib.dir}/wattdepot/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="false" type="jar,javadoc,source" />
+    <path id="wattdepot.path" location="${lib.dir}/wattdepot/wattdepot-lib-client.jar" />
+  </target>
+
+  <!-- Basic properties for this system. -->
+  <property name="system.name" value="wattdepot-katas-tedshaw" />
+  <property name="majorVersionNumber" value="1" />
+  <property name="minorVersionNumber" value="0" />
+  <tstamp>
+    <format property="DAYSTAMP" pattern="yyyy.MM.dd.HH.mm" />
+  </tstamp>
+  <property name="version" value="${majorVersionNumber}.${minorVersionNumber}.${DAYSTAMP}" />
+
+
+  <!-- The compile classpath is useful to many tools. -->
+  <path id="compile.classpath">
+    <path refid="junit.path" />
+    <path refid="wattdepot.path" />
+  </path>
+
+  <target name="compile" depends="install-ivy, install-libraries" description="Compiles the code.">
+    <!-- Now compile the code into build/classes -->
+    <mkdir dir="${build.dir}/classes" />
+    <javac srcdir="${src.dir}" destdir="${build.dir}/classes" debug="on" includeAntRuntime="no">
+      <classpath refid="compile.classpath" />
+      <compilerarg value="-Xlint:all" />
+      <compilerarg value="-Werror" />
+    </javac>
+  </target>
+  
+  <target name="run" depends="SourceListing, SourceLatency, SourceHierarchy, EnergyYesterday, HighestRecordedPowerYesterday, MondayAverageEnergy" description="Runs all the katas">
+    </target>  
+
+    <target name="SimpleApplication" depends="compile" description="Runs the simple application.">
+      <java classname="org.wattdepot.simpleapp.SimpleApplication" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="SourceListing" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.SourceListing" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="SourceLatency" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.SourceLatency" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="SourceHierarchy" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.SourceHierarchy" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="EnergyYesterday" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.EnergyYesterday" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="HighestRecordedPowerYesterday" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.HighestRecordedPowerYesterday" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+
+    <target name="MondayAverageEnergy" depends="compile">
+      <java classname="edu.hawaii.tedshaw.wattdepot.katas.MondayAverageEnergy" fork="yes" maxmemory="768m">
+        <classpath>
+          <pathelement location="${build.dir}/classes" />
+          <path refid="compile.classpath" />
+        </classpath>
+        <arg value="http://server.wattdepot.org:8190/wattdepot/"/>
+      </java>
+    </target>  
+  
+
+</project>
