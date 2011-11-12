@@ -10,7 +10,7 @@
 
   <delete dir="${build.jar.dir}" quiet="true" />
 
-  <target name="jar" depends="compile" description="Create wattdepot-simpleapp.jar">
+  <target name="jar" depends="compile" description="Create wattdepot command line interface">
     <!-- Define the directories and distribution name -->
     <mkdir dir="${tmp.dir}" />
     <mkdir dir="${build.jar.dir}" />
@@ -26,10 +26,10 @@
      <path refid="wattdepot.path" />
     </unjar>
     
-    <jar destfile="${build.jar.dir}/wattdepot-simpleapp.jar" basedir="${tmp.dir}">
+    <jar destfile="${build.jar.dir}/wattdepot-hale-aloha-cli.jar" basedir="${tmp.dir}">
      <manifest>
-        <attribute name="Main-Class" value="org.wattdepot.simpleapp.SimpleApplication" />
-        <attribute name="Implementation-Title" value="Simple WattDepot Application" />
+        <attribute name="Main-Class" value="edu.hawaii.halealohacli" />
+        <attribute name="Implementation-Title" value="WattDepot Command Line Interface" />
         <attribute name="Implementation-Version" value="${version}" />
         <attribute name="Implementation-Vendor" value="Collaborative Software Development Laboratory, University of Hawaii" />
       </manifest>
