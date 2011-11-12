@@ -12,20 +12,23 @@ import edu.hawaii.halealohacli.processor.Processor;
 
 /**
  * Main class of command line interface.
+ * 
  * @author Ted
- *
+ * 
  */
 public class Main {
 
   /**
    * Main method.
+   * 
    * @param args Argument.
-   * @throws MiscClientException 
-   * @throws BadXmlException 
-   * @throws ResourceNotFoundException 
-   * @throws NotAuthorizedException 
+   * @throws MiscClientException Do nothing.
+   * @throws BadXmlException Do nothing.
+   * @throws ResourceNotFoundException Do nothing.
+   * @throws NotAuthorizedException Do nothing.
    */
-  public static void main(String[] args) throws NotAuthorizedException, ResourceNotFoundException, BadXmlException, MiscClientException {
+  public static void main(String[] args) throws NotAuthorizedException, ResourceNotFoundException,
+      BadXmlException, MiscClientException {
     String url = "http://server.wattdepot.org:8190/wattdepot/";
     WattDepotClient client = new WattDepotClient(url);
 
