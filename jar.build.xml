@@ -26,7 +26,7 @@
      <path refid="wattdepot.path" />
     </unjar>
     
-    <jar destfile="${build.jar.dir}/wattdepot-hale-aloha-cli.jar" basedir="${tmp.dir}">
+    <jar destfile="${build.jar.dir}/hale-aloha-cli.jar" basedir="${tmp.dir}">
      <manifest>
         <attribute name="Main-Class" value="edu.hawaii.halealohacli" />
         <attribute name="Implementation-Title" value="WattDepot Command Line Interface" />
