@@ -1,16 +1,27 @@
 package edu.hawaii.halealohacli.command;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
 import org.wattdepot.util.tstamp.Tstamp;
 
 /**
- * Prints the daily energy consumption for a given location and date.
+ * Implement the energy-since Command interface. <br><br>
  * 
- * @author Joshua Antonio, Toy Lim
+ * Usage: energy-since [tower | lounge] [date] <br>
+ * Returns the energy used since the date (yyyy-mm-dd) to now. <br><br>
+ * 
+ * Note: <br>
+ * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
+ * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E.
+ * For example, Mokihana-A.
+ * 
+ * @author Toy Lim
  */
-public class DailyEnergy implements Command {
+public class EnergySince implements Command {
   private String commandString;
   private String commandSyntax;
   private String commandDescription;
@@ -22,11 +33,10 @@ public class DailyEnergy implements Command {
    * @param client WattDepotClient to be used by this command
    * @see org.wattdepot.client.WattDepotClient
    */
-  public DailyEnergy(WattDepotClient client) {
-    commandString = "daily-energy";
+  public EnergySince(WattDepotClient client) {
+    commandString = "energy-since";
     commandSyntax = commandString + " [tower | lounge] [date]";
-    commandDescription = "Returns the energy in kWh used by the tower or lounge for the " 
-                         + "specified date (yyyy-mm-dd).";
+    commandDescription = "Returns the energy used since the date (yyyy-mm-dd) to now.";
     wattDepotClient = client;
   }
 
@@ -86,10 +96,13 @@ public class DailyEnergy implements Command {
     catch (Exception e) {
       throw new InvalidArgumentException("Invalid date: " + date, (Throwable) e);
     }
-    endTime = Tstamp.incrementDays(startTime, 1);
+    endTime = Tstamp.makeTimestamp();
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     try {
       Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 0);
-      System.out.format("%s's energy consumption for %s was: %.0f kWh.", source, date, 
+      System.out.format("Total energy consumption by %s from %s to %s is: %.1f kWh", source,
+          format.format(new Date(startTime.toGregorianCalendar().getTimeInMillis())),
+          format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())),
           energy / 1000);
     }
     catch (WattDepotClientException e) {
@@ -98,4 +111,3 @@ public class DailyEnergy implements Command {
     }
   }
 }
-

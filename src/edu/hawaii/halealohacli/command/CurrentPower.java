@@ -9,9 +9,10 @@ import org.wattdepot.client.WattDepotClientException;
 import org.wattdepot.resource.sensordata.jaxb.SensorData;
 
 /**
- * Implement the current-power Command interface. <br>
+ * Implement the current-power Command interface. <br><br>
+ * 
  * Usage: current-power [tower | lounge] <br>
- * Returns the current power in kW for the associated tower or lounge. <br>
+ * Returns the current power in kW for the associated tower or lounge. <br><br>
  * 
  * Note: <br>
  * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
