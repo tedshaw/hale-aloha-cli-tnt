@@ -3,6 +3,7 @@ package edu.hawaii.halealohacli.command;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
+import org.wattdepot.resource.sensordata.jaxb.SensorData;
 import org.wattdepot.util.tstamp.Tstamp;
 
 /**
@@ -79,17 +80,25 @@ public class DailyEnergy implements Command {
     }
     String source = args[0];
     String date = args[1];
-    XMLGregorianCalendar startTime = null, endTime = null;
+    XMLGregorianCalendar startTime = null, endTime = null, timeStamp = null;
     try {
       startTime = Tstamp.makeTimestamp(date);
     }
     catch (Exception e) {
       throw new InvalidArgumentException("Invalid date: " + date, (Throwable) e);
     }
+    
     endTime = Tstamp.incrementDays(startTime, 1);
     try {
+      SensorData data = wattDepotClient.getLatestSensorData(source);
+      timeStamp = data.getTimestamp();
+      
+      if (endTime.compare(timeStamp) == 1) {
+        endTime = timeStamp;
+      }
+      
       Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 0);
-      System.out.format("%s's energy consumption for %s was: %.0f kWh.", source, date, 
+      System.out.format("%s's energy consumption for %s was: %.0f kWh.\n", source, date, 
           energy / 1000);
     }
     catch (WattDepotClientException e) {

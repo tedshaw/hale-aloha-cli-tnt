@@ -73,7 +73,7 @@ public class TestDailyEnergy {
     for (String tower : towers) {
       for (String suffix : suffixes) {
         String source = tower + suffix;
-        String date = "2011-11-01";
+        String date = "2011-11-17";
         try {
           dailyEnergy.execute(source, date);
         }
