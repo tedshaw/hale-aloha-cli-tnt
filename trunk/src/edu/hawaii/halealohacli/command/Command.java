@@ -31,8 +31,7 @@ public interface Command {
    * Execute the command given the list of arguments.
    * 
    * @param args List of String arguments
-   * @return true if command was executed, false if error is encountered
    * @throws InvalidArgumentException if any of the arguments is invalid
    */
-  public Boolean execute(String... args) throws InvalidArgumentException;
+  public void execute(String... args) throws InvalidArgumentException;
 }
