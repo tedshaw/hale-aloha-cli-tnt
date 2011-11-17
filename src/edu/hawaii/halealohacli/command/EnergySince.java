@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
+import org.wattdepot.resource.sensordata.jaxb.SensorData;
 import org.wattdepot.util.tstamp.Tstamp;
 
 /**
@@ -96,11 +97,12 @@ public class EnergySince implements Command {
     catch (Exception e) {
       throw new InvalidArgumentException("Invalid date: " + date, (Throwable) e);
     }
-    endTime = Tstamp.makeTimestamp();
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     try {
+      SensorData data = wattDepotClient.getLatestSensorData(source);
+      endTime = data.getTimestamp();
       Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 0);
-      System.out.format("Total energy consumption by %s from %s to %s is: %.1f kWh", source,
+      System.out.format("Total energy consumption by %s from %s to %s is: %.1f kWh\n", source,
           format.format(new Date(startTime.toGregorianCalendar().getTimeInMillis())),
           format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())),
           energy / 1000);
