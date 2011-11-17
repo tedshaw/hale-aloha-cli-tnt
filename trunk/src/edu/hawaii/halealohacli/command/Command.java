@@ -37,7 +37,6 @@ public interface Command {
    * 
    * @param args List of String arguments
    * @return true if command was executed, false if error is encountered
-   * @throws InvalidArgumentException if any of the arguments is invalid
    * @throws MiscClientException MiscClient
    * @throws BadXmlException BadXml
    * @throws NotAuthorizedException NotAuthorized
