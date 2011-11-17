@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.wattdepot.client.WattDepotClient;
 
 /**
- * Unit test for CurrentPower Command.
+ * Unit test for CurrentPower Command. <br><br>
  * 
  * Note: <br>
  * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
@@ -25,11 +25,9 @@ public class TestCurrentPower {
 
   /**
    * Setup test by initializing Command.
-   * 
-   * @throws java.lang.Exception possible exception
    */
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void testCurrentPower() {
     commandString = "current-power";
     commandSyntax = "current-power [tower | lounge]";
     commandDescription = "Returns the current power in kW for the associated tower or lounge.";
