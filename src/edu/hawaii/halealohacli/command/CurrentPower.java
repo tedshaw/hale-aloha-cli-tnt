@@ -1,16 +1,26 @@
 package edu.hawaii.halealohacli.command;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
-import org.wattdepot.util.tstamp.Tstamp;
+import org.wattdepot.resource.sensordata.jaxb.SensorData;
 
 /**
- * Prints the daily energy consumption for a given location and date.
+ * Implement the current-power Command interface. <br>
+ * Usage: current-power [tower | lounge] <br>
+ * Returns the current power in kW for the associated tower or lounge. <br>
  * 
- * @author Joshua Antonio, Toy Lim
+ * Note: <br>
+ * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
+ * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E.
+ * For example, Mokihana-A.
+ * 
+ * @author Toy Lim
  */
-public class DailyEnergy implements Command {
+public class CurrentPower implements Command {
   private String commandString;
   private String commandSyntax;
   private String commandDescription;
@@ -22,11 +32,10 @@ public class DailyEnergy implements Command {
    * @param client WattDepotClient to be used by this command
    * @see org.wattdepot.client.WattDepotClient
    */
-  public DailyEnergy(WattDepotClient client) {
-    commandString = "daily-energy";
-    commandSyntax = commandString + " [tower | lounge] [date]";
-    commandDescription = "Returns the energy in kWh used by the tower or lounge for the " 
-                         + "specified date (yyyy-mm-dd).";
+  public CurrentPower(WattDepotClient client) {
+    commandString = "current-power";
+    commandSyntax = commandString + " [tower | lounge]";
+    commandDescription = "Returns the current power in kW for the associated tower or lounge.";
     wattDepotClient = client;
   }
 
@@ -74,28 +83,19 @@ public class DailyEnergy implements Command {
     if (args == null || args.length < 1) {
       throw new InvalidArgumentException("No argument is given.");
     }
-    if (args.length < 2) {
-      throw new InvalidArgumentException("Some argument is missing.");
-    }
-    String source = args[0];
-    String date = args[1];
-    XMLGregorianCalendar startTime = null, endTime = null;
-    try {
-      startTime = Tstamp.makeTimestamp(date);
-    }
-    catch (Exception e) {
-      throw new InvalidArgumentException("Invalid date: " + date, (Throwable) e);
-    }
-    endTime = Tstamp.incrementDays(startTime, 1);
-    try {
-      Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 15);
-      System.out.format("%s's energy consumption for %s was: %.0f kWh.", source, date, 
-          energy / 1000);
-    }
-    catch (WattDepotClientException e) {
-      throw new InvalidArgumentException("Error attempting to access data from " + source, 
-          (Throwable) e);
+    for (String source : args) {
+      try {
+        SensorData data = wattDepotClient.getLatestSensorData(source);
+        XMLGregorianCalendar timestamp = data.getTimestamp();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        System.out.format("%s's power as of %s was %.1f kW.\n", source, 
+            format.format(new Date(timestamp.toGregorianCalendar().getTimeInMillis())), 
+            data.getPropertyAsDouble("powerConsumed"));
+      }
+      catch (WattDepotClientException e) {
+        throw new InvalidArgumentException("Error attempting to access data from " + source, 
+            (Throwable) e);
+      }
     }
   }
 }
-

@@ -1,8 +1,8 @@
 package edu.hawaii.halealohacli.command;
 
 /**
- * InvalidArgumentException: whenever an argument parser encounters an
- * invalid argument, this exception should be thrown.
+ * InvalidArgumentException: whenever an argument parser encounters an invalid argument, this
+ * exception should be thrown.
  * 
  * @author Toy Lim
  */
@@ -20,7 +20,17 @@ public class InvalidArgumentException extends Exception {
    * @param message Error message String
    */
   public InvalidArgumentException(String message) {
-    super("The given argument is invalid: " + message);
+    super(message);
+  }
+
+  /**
+   * Constructor with a custom message and Throwable cause trace.
+   * 
+   * @param message Error message String
+   * @param cause Throwable cause trace
+   */
+  public InvalidArgumentException(String message, Throwable cause) {
+    super(message, cause);
   }
 
   /**
