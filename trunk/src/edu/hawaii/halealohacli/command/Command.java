@@ -1,10 +1,5 @@
 package edu.hawaii.halealohacli.command;
 
-import org.wattdepot.client.BadXmlException;
-import org.wattdepot.client.MiscClientException;
-import org.wattdepot.client.NotAuthorizedException;
-import org.wattdepot.client.ResourceNotFoundException;
-
 /**
  * Define the Command interface.
  * 
@@ -37,12 +32,7 @@ public interface Command {
    * 
    * @param args List of String arguments
    * @return true if command was executed, false if error is encountered
-   * @throws MiscClientException MiscClient
-   * @throws BadXmlException BadXml
-   * @throws NotAuthorizedException NotAuthorized
-   * @throws ResourceNotFoundException ResourceNotFound
-   * @throws Exception
+   * @throws InvalidArgumentException if any of the arguments is invalid
    */
-  public Boolean execute(String... args) throws NotAuthorizedException,
-      BadXmlException, MiscClientException, ResourceNotFoundException;
+  public Boolean execute(String... args) throws InvalidArgumentException;
 }
