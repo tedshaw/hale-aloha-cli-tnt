@@ -19,7 +19,8 @@ public class CommandManager {
    */
   public CommandManager(WattDepotClient client) {
     commandList =
-        Arrays.asList(new CurrentPower(client), new DailyEnergy(client), new EnergySince(client));
+        Arrays.asList(new CurrentPower(client), new DailyEnergy(client), new EnergySince(client),
+            new RankTowers(client));
   }
 
   /**
