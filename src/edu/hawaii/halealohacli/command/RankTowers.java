@@ -17,8 +17,7 @@ import org.wattdepot.util.tstamp.Tstamp;
  * 
  * Usage: rank-towers [start] [end] Returns the energy used since the date (yyyy-mm-dd) to now.
  * Returns a list in sorted order from least to most energy consumed between the [start] and [end]
- * date (yyyy-mm-dd)
- * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
+ * date (yyyy-mm-dd) Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
  * 
  * @author Ted Shaw
  */
@@ -71,7 +70,7 @@ public class RankTowers implements Command {
    * @author Ted Shaw
    * 
    */
-  private class EnergySort implements Comparable<EnergySort> {
+  private static class EnergySort implements Comparable<EnergySort> {
     String source;
     double energy;
 
