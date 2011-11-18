@@ -28,7 +28,7 @@
     
     <jar destfile="${build.jar.dir}/hale-aloha-cli.jar" basedir="${tmp.dir}">
      <manifest>
-        <attribute name="Main-Class" value="edu.hawaii.halealohacli" />
+        <attribute name="Main-Class" value="edu.hawaii.halealohacli.Main" />
         <attribute name="Implementation-Title" value="WattDepot Command Line Interface" />
         <attribute name="Implementation-Version" value="${version}" />
         <attribute name="Implementation-Vendor" value="Collaborative Software Development Laboratory, University of Hawaii" />
