@@ -67,6 +67,7 @@ public class Help implements Command {
   @Override
   public void execute(String... args) throws InvalidArgumentException {
     CommandManager manager = new CommandManager(this.wattDepotClient);
+    System.out.println("Here are the available commands for this system.");
     for (Command command : manager.getCommands()) {
       if (!command.getSyntax().equals("help")) {
         System.out.println(command.getSyntax());
