@@ -1,8 +1,8 @@
 package edu.hawaii.halealohacli;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import org.wattdepot.client.BadXmlException;
 import org.wattdepot.client.MiscClientException;
 import org.wattdepot.client.NotAuthorizedException;
@@ -13,7 +13,7 @@ import edu.hawaii.halealohacli.processor.Processor;
 /**
  * Main class of command line interface.
  * 
- * @author Ted
+ * @author Ted Shaw, Joshua Antonio
  * 
  */
 public class Main {
@@ -42,27 +42,27 @@ public class Main {
       return;
     }
 
-    // open up standard input
     while (true) {
-      // prompt the user to enter their name
       System.out.print("Enter a command: ");
 
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
       String command = null;
 
-      // read the command from the command-line; need to use try/catch with the
-      // readLine() method
       try {
         command = br.readLine();
       }
       catch (IOException ioe) {
         System.out.println("IO error trying to read your command.");
       }
-      String[] temp = new String[2];
-      temp[0] = url;
-      temp[1] = command;
-      Processor.main(temp);
+
+      if ("exit".equals(command)) {
+        System.exit(1);
+      }
+
+      String[] userInput = command.split("\\s+");
+
+      Processor processor = new Processor(userInput);
+      processor.process(client);
     }
 
   }
