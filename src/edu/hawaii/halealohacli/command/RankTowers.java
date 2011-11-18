@@ -1,28 +1,24 @@
 package edu.hawaii.halealohacli.command;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
-import org.wattdepot.resource.sensordata.jaxb.SensorData;
-import org.wattdepot.resource.source.jaxb.Source;
 import org.wattdepot.util.tstamp.Tstamp;
 
 /**
- * Implement the energy-since Command interface. <br>
- * <br>
+ * Implement the rank-towers Command interface.
  * 
- * Usage: energy-since [tower | lounge] [date] <br>
- * Returns the energy used since the date (yyyy-mm-dd) to now. <br>
- * <br>
- * 
- * Note: <br>
+ * Usage: rank-towers [start] [end] Returns the energy used since the date (yyyy-mm-dd) to now.
+ * Returns a list in sorted order from least to most energy consumed between the [start] and [end]
+ * date (yyyy-mm-dd)
  * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
- * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E. For example,
- * Mokihana-A.
  * 
  * @author Ted Shaw
  */
@@ -40,7 +36,7 @@ public class RankTowers implements Command {
    */
   public RankTowers(WattDepotClient client) {
     commandString = "rank-towers";
-    commandSyntax = commandString + " [start] [stop]";
+    commandSyntax = commandString + " [start] [end]";
     commandDescription =
         "Returns a list in sorted order from least to most energy consumed between the [start] "
             + "and [end] date (yyyy-mm-dd)";
@@ -67,6 +63,67 @@ public class RankTowers implements Command {
   @Override
   public String getDescription() {
     return commandDescription;
+  }
+
+  /**
+   * Data structure for sorting energy.
+   * 
+   * @author Ted Shaw
+   * 
+   */
+  private class EnergySort implements Comparable<EnergySort> {
+    String source;
+    double energy;
+
+    /**
+     * Used to sort the energy.
+     * 
+     * @param other The tower to be compared.
+     * @return Whether tower is before or after this.
+     */
+    public int compareTo(EnergySort other) {
+      if (this.energy > other.energy) {
+        return -1;
+      }
+      else if (this.energy < other.energy) {
+        return 1;
+      }
+      else {
+        return this.source.compareTo(other.source);
+      }
+    }
+
+    /**
+     * Implements equals using only the source name.
+     * 
+     * @param obj Comparison object
+     * @return If obj is equal or not to this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+      // check identity
+      if (this == obj) {
+        return true;
+      }
+      // check instance
+      if (!(obj instanceof EnergySort)) {
+        return false;
+      }
+      // cast to native object is now safe
+      EnergySort newSource = (EnergySort) obj;
+      // native object compare
+      return this.source.equals(newSource.source);
+    }
+
+    /**
+     * Returns the hashCode using the source name.
+     * 
+     * @return The hash code.
+     */
+    @Override
+    public int hashCode() {
+      return this.source.hashCode();
+    }
   }
 
   /**
@@ -100,34 +157,33 @@ public class RankTowers implements Command {
       throw new InvalidArgumentException("Invalid date: " + end, (Throwable) e);
     }
 
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-    List<Source> sourceList = null;
-    try {
-      sourceList = wattDepotClient.getSources();
-    }
-    catch (WattDepotClientException e) {
-      System.err.println("There was a problem accessing the server: " + e.toString());
-    }
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    SortedSet<EnergySort> sortedEnergy = new TreeSet<EnergySort>();
+    List<String> sourceList = new ArrayList<String>();
+
+    sourceList.add("Mokihana");
+    sourceList.add("Ilima");
+    sourceList.add("Lehua");
+    sourceList.add("Lokelani");
 
     try {
-      if (sourceList != null) {
-        for (Source source : sourceList) {
-          String sourceName = source.getName();
-          SensorData data = wattDepotClient.getLatestSensorData(sourceName);
-          endTime = data.getTimestamp();
-          Double energy = wattDepotClient.getEnergyConsumed(sourceName, startTime, endTime, 0);
-          System.out.format("Total energy consumption by %s from %s to %s is: %.1f kWh\n",
-              sourceName,
-              format.format(new Date(startTime.toGregorianCalendar().getTimeInMillis())),
-              format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())),
-              energy / 1000);
-        }
+      for (String sourceName : sourceList) {
+        EnergySort temp = new EnergySort();
+        temp.source = sourceName;
+        temp.energy = wattDepotClient.getEnergyConsumed(temp.source, startTime, endTime, 0);
+        sortedEnergy.add(temp);
       }
     }
     catch (WattDepotClientException e) {
       System.err.println("There was a problem accessing the server: " + e.toString());
     }
 
+    System.out.format("For the interval %s to %s, energy consumption by tower was:\n",
+        format.format(new Date(startTime.toGregorianCalendar().getTimeInMillis())),
+        format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())));
+    for (EnergySort currentEnergy : sortedEnergy) {
+      System.out.format("%-10s %s kWh\n", currentEnergy.source, (int) currentEnergy.energy / 1000);
+    }
   }
 
   /**
