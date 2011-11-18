@@ -82,10 +82,10 @@ public class RankTowers implements Command {
      */
     public int compareTo(EnergySort other) {
       if (this.energy > other.energy) {
-        return -1;
+        return 1;
       }
       else if (this.energy < other.energy) {
-        return 1;
+        return -1;
       }
       else {
         return this.source.compareTo(other.source);
