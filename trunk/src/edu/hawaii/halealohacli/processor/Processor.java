@@ -70,7 +70,7 @@ public class Processor {
       }
     }
     if (!validCommand) {
-      System.out.println("Error: Not a valid command. Type help for a list of commands.");
+      System.out.println("Error: Not a valid command. Type \"help\" for a list of commands.");
     }
   }
 
