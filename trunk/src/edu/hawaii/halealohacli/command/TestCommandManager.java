@@ -82,14 +82,6 @@ public class TestCommandManager {
           System.out.format("Error: %s\n", e.getMessage());
         }
       }
-      else if (command.toString().equals("help")) {
-        try {
-          command.execute();
-        }
-        catch (InvalidArgumentException e) {
-          System.out.format("Error: %s\n", e.getMessage());
-        }
-      }
     }
   }
 }
