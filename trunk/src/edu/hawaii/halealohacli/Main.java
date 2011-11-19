@@ -46,7 +46,7 @@ public class Main {
         System.out.println("IO error trying to read your command.");
       }
 
-      if ("exit".equals(command)) {
+      if ("quit".equals(command)) {
         System.exit(1);
       }
 

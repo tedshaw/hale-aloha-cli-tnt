@@ -6,14 +6,14 @@ import org.wattdepot.client.WattDepotClient;
  * Returns a list of available commands.
  * 
  * @author Joshua Antonio
- *
+ * 
  */
 public class Help implements Command {
   private String commandString;
   private String commandSyntax;
   private String commandDescription;
   private WattDepotClient wattDepotClient;
-  
+
   /**
    * Default constructor.
    * 
@@ -25,8 +25,7 @@ public class Help implements Command {
     this.commandDescription = "Returns a list of the available commands for this system.";
     this.wattDepotClient = wattDepotClient;
   }
-  
-  
+
   /**
    * Return the command string.
    * 
@@ -36,7 +35,6 @@ public class Help implements Command {
   public String toString() {
     return this.commandString;
   }
-
 
   /**
    * Return the command syntax.
@@ -61,7 +59,7 @@ public class Help implements Command {
   /**
    * Print the list of available commands with the syntax and description.
    * 
-   * @param args 
+   * @param args String[] arguments
    * @throws InvalidArgumentException if any of the arguments are invalid
    */
   @Override
@@ -74,7 +72,10 @@ public class Help implements Command {
         System.out.println(command.getDescription());
       }
     }
-    
+    System.out.println("quit");
+    System.out.println("Terminates execution");
+    System.out.println("Note: towers are:  Mokihana, Ilima, Lehua, Lokelani");
+    System.out.println("Lounges are the tower names followed by a \"-\" followed by one of "
+        + "A, B, C, D, E. For example, Mokihana-A.");
   }
-
 }
