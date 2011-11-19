@@ -22,6 +22,7 @@ public class Main {
   public static void main(String[] args) {
     String url = "http://server.wattdepot.org:8190/wattdepot/";
     WattDepotClient client = new WattDepotClient(url);
+    Processor processor = new Processor(client);
 
     // Check to make sure a connection can be made.
     // If no connection, then exit right now.
@@ -51,8 +52,8 @@ public class Main {
       }
 
       String[] userInput = command.split("\\s+");
-      Processor processor = new Processor(userInput);
-      processor.process(client);
+       
+      processor.process(userInput);
     }
 
   }

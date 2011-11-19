@@ -12,33 +12,34 @@ import edu.hawaii.halealohacli.command.InvalidArgumentException;
  * 
  */
 public class Processor {
-  String command;
-  String[] arguments = null;
-  
+  CommandManager manager;
+
   /**
    * Constructor that separates user input into a command and a list of arguments.
    * 
-   * @param userInput User input from command line.
+   * @param client The WattDepotClient.
    */
-  public Processor(String[] userInput) {
-    this.command = userInput[0];
-    if (userInput.length > 1) {
-      this.arguments = new String[userInput.length - 1];
-      for (int i = 1; i < userInput.length; i++) {
-        this.arguments[i - 1] = userInput[i];
-      }
-    }
+  public Processor(WattDepotClient client) {
+    manager = new CommandManager(client);
   }
 
   /**
    * Calls the appropriate command.
    * 
-   * @param client The WattDepotClient.
+   * @param userInput User input from command line.
    */
-  public void process(WattDepotClient client) {
-    CommandManager manager = new CommandManager(client);
+  public void process(String[] userInput) {
+    String commandString;
+    String[] arguments = null;
+    commandString = userInput[0];
+    if (userInput.length > 1) {
+      arguments = new String[userInput.length - 1];
+      for (int i = 1; i < userInput.length; i++) {
+        arguments[i - 1] = userInput[i];
+      }
+    }
     Boolean validCommand = false;
-    if (this.command.equals("help")) {
+    if ("help".equals(commandString)) {
       validCommand = true;
       System.out.println("Here are the available commands for this system.");
       for (Command command : manager.getCommands()) {
@@ -55,14 +56,12 @@ public class Processor {
     }
     else {
       for (Command commandInstance : manager.getCommands()) {
-        if (this.command.equals(commandInstance.toString())) {
+        if (commandString.equals(commandInstance.toString())) {
           validCommand = true;
           try {
             commandInstance.execute(arguments);
           }
           catch (InvalidArgumentException e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
             System.out.println("Error: Invalid Syntax. Please use the following.");
             System.out.println(commandInstance.getSyntax());
           }
