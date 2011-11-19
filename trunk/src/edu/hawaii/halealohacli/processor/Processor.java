@@ -14,7 +14,7 @@ import edu.hawaii.halealohacli.command.InvalidArgumentException;
 public class Processor {
   String command;
   String[] arguments = null;
-  
+
   /**
    * Constructor that separates user input into a command and a list of arguments.
    * 
@@ -46,13 +46,13 @@ public class Processor {
         }
         catch (InvalidArgumentException e) {
           // TODO Auto-generated catch block
-          //e.printStackTrace();
+          // e.printStackTrace();
           System.out.println("Error: Invalid Syntax. Please use the following.");
           System.out.println(commandInstance.getSyntax());
         }
       }
     }
-    if(!validCommand){
+    if (!validCommand) {
       System.out.println("Error: Not a valid command. Type help for a list of commands.");
     }
   }
