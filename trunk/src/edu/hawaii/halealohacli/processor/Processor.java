@@ -37,8 +37,10 @@ public class Processor {
    */
   public void process(WattDepotClient client) {
     CommandManager manager = new CommandManager(client);
+    Boolean validCommand = false;
     for (Command commandInstance : manager.getCommands()) {
       if (this.command.equals(commandInstance.toString())) {
+        validCommand = true;
         try {
           commandInstance.execute(arguments);
         }
@@ -47,6 +49,9 @@ public class Processor {
           e.printStackTrace();
         }
       }
+    }
+    if(!validCommand){
+      System.out.println("Not a valid command. Type help for a list of commands.");
     }
   }
 
