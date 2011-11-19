@@ -32,7 +32,7 @@ public class Main {
       System.out.format("Could not connect to: %s%n", url);
       return;
     }
-
+    
     while (true) {
       System.out.print("Enter a command: ");
 
@@ -47,11 +47,10 @@ public class Main {
       }
 
       if ("quit".equals(command)) {
-        System.exit(1);
+        return;
       }
 
       String[] userInput = command.split("\\s+");
-
       Processor processor = new Processor(userInput);
       processor.process(client);
     }
