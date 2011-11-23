@@ -17,7 +17,7 @@
   <import file="javadoc.build.xml" />
 
   <target name="verify"
-          depends="clean, compile, junit.tool, checkstyle.tool, javadoc.tool, pmd.tool, findbugs.tool"
+          depends="compile, junit.tool, checkstyle.tool, javadoc.tool, pmd.tool, findbugs.tool"
           description="Verifies system.">
     <fail message="FindBugs reported warnings." if="findbugs.warningsfound" />
   </target>
