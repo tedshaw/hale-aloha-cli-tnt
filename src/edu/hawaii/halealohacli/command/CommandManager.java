@@ -57,7 +57,7 @@ public class CommandManager {
     }
     /*
      * commandList = Arrays.asList(new CurrentPower(client), new DailyEnergy(client), new
-     * EnergySince(client), new RankTowers(client), new Help(client));
+     * EnergySince(client), new RankTowers(client));
      */
   }
 
