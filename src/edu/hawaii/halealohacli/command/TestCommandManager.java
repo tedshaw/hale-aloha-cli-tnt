@@ -53,7 +53,7 @@ public class TestCommandManager {
     for (String tower : towers) {
       for (String suffix : suffixes) {
         String source = tower + suffix;
-        String date = "2011-11-01";
+        String date = "2011-11-25";
         Command[] commands = manager.getCommands();
         for (Command command : commands) {
           try {
@@ -75,7 +75,7 @@ public class TestCommandManager {
     for (Command command : commands) {
       if (command.toString().equals("rank-towers")) {
         try {
-          command.execute("2011-11-01", "2011-11-09");
+          command.execute("2011-11-23", "2011-11-24");
         }
         catch (InvalidArgumentException e) {
           System.out.format("Error: %s\n", e.getMessage());

@@ -18,7 +18,6 @@
         <pathelement location="${build.dir}/classes" />
         <path refid="compile.classpath"/>
       </classpath>
-      <sysproperty key="robocode.home" value="${lib.dir}/robocode"/>
       <formatter type="xml" />
       <batchtest todir="${junit.build.dir}">
         <fileset dir="${src.dir}" includes="**/Test*.java"/>
