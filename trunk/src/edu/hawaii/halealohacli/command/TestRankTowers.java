@@ -66,8 +66,8 @@ public class TestRankTowers {
    */
   @AfterClass
   public static void testExecute() {
-    String start = "2011-11-03";
-    String end = "2011-11-04";
+    String start = "2011-11-23";
+    String end = "2011-11-24";
     try {
       rankTowers.execute(start, end);
     }

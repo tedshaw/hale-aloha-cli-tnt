@@ -71,7 +71,7 @@ public class TestEnergySince {
     for (String tower : towers) {
       for (String suffix : suffixes) {
         String source = tower + suffix;
-        String date = "2011-11-01";
+        String date = "2011-11-23";
         try {
           energySince.execute(source, date);
         }
