@@ -8,10 +8,6 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.wattdepot.client.BadXmlException;
-import org.wattdepot.client.MiscClientException;
-import org.wattdepot.client.NotAuthorizedException;
-import org.wattdepot.client.ResourceNotFoundException;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
 import org.wattdepot.util.tstamp.Tstamp;
@@ -151,13 +147,13 @@ public class RankTowers implements Command {
       startTime = Tstamp.makeTimestamp(start);
     }
     catch (Exception e) {
-      System.err.println("Invalid date: " + start);
+      System.out.println("Invalid date: " + start);
     }
     try {
       endTime = Tstamp.makeTimestamp(end);
     }
     catch (Exception e) {
-      System.err.println("Invalid date: " + end);
+      System.out.println("Invalid date: " + end);
     }
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -172,35 +168,14 @@ public class RankTowers implements Command {
     for (String sourceName : sourceList) {
       EnergySort temp = new EnergySort();
       temp.source = sourceName;
-        try {
-          temp.energy = wattDepotClient.getEnergyConsumed(temp.source, startTime, endTime, 0);
-        }
-        catch (NotAuthorizedException e) {
-          throw new InvalidArgumentException("Error attempting to access data from " + sourceName, 
-              (Throwable) e);
-        }
-        catch (ResourceNotFoundException e) {
-          throw new InvalidArgumentException("Error attempting to access data from " + sourceName, 
-              (Throwable) e);
-        }
-        catch (BadXmlException e) {
-          XMLGregorianCalendar firstData = null;
-          try {
-            firstData = wattDepotClient.getSourceSummary(sourceName).getFirstSensorData();
-          }
-          catch (WattDepotClientException e1) {
-            throw new InvalidArgumentException("Error attempting to access data from " + sourceName, 
-                (Throwable) e1);
-          }
-          System.out.println("Error: Date out of range. Please a date on or after "
-              + format.format(new Date(firstData.toGregorianCalendar().getTimeInMillis())));
-          return;
-        }
-        catch (MiscClientException e) {
-          throw new InvalidArgumentException("Error attempting to access data from " + sourceName, 
-              (Throwable) e);
-        }
-        sortedEnergy.add(temp);
+      try {
+        temp.energy = wattDepotClient.getEnergyConsumed(temp.source, startTime, endTime, 0);
+      }
+      catch (WattDepotClientException e) {
+        throw new InvalidArgumentException("Error attempting to access data from " + sourceName,
+            (Throwable) e);
+      }
+      sortedEnergy.add(temp);
     }
 
     System.out.format("For the interval %s to %s, energy consumption by tower was:\n",
