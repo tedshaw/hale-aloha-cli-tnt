@@ -1,6 +1,10 @@
 package edu.hawaii.halealohacli.command;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.wattdepot.client.BadXmlException;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
 import org.wattdepot.resource.sensordata.jaxb.SensorData;
@@ -101,8 +105,23 @@ public class DailyEnergy implements Command {
       System.out.format("%s's energy consumption for %s was: %.0f kWh.\n", source, date, 
           energy / 1000);
     }
+    catch (BadXmlException e) {
+      XMLGregorianCalendar firstData = null;
+      try {
+        firstData = wattDepotClient.getSourceSummary(source).getFirstSensorData();
+      }
+      catch (WattDepotClientException e1) {
+        System.err.println("Error attempting to access data from " + source);
+        return;
+      }
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+      throw new InvalidArgumentException(
+          "Error attempting to access data from date. Please a date on or after "
+              + format.format(new Date(firstData.toGregorianCalendar().getTimeInMillis())),
+          (Throwable) e);
+    }
     catch (WattDepotClientException e) {
-      throw new InvalidArgumentException("Error attempting to access data from " + source, 
+      throw new InvalidArgumentException("Error attempting to access data from " + source,
           (Throwable) e);
     }
   }
