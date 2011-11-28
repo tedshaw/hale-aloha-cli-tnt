@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.wattdepot.client.BadXmlException;
 import org.wattdepot.client.WattDepotClient;
 import org.wattdepot.client.WattDepotClientException;
 import org.wattdepot.util.tstamp.Tstamp;
@@ -167,16 +168,31 @@ public class RankTowers implements Command {
     sourceList.add("Lehua");
     sourceList.add("Lokelani");
 
-    for (String sourceName : sourceList) {
+    for (String source : sourceList) {
       EnergySort temp = new EnergySort();
-      temp.source = sourceName;
+      temp.source = source;
       try {
         temp.energy = wattDepotClient.getEnergyConsumed(temp.source, startTime, endTime, 0);
       }
-      catch (WattDepotClientException e) {
-        throw new InvalidArgumentException("Error attempting to access data from " + sourceName,
+      catch (BadXmlException e) {
+        XMLGregorianCalendar firstData = null;
+        try {
+          firstData = wattDepotClient.getSourceSummary(source).getFirstSensorData();
+        }
+        catch (WattDepotClientException e1) {
+          System.err.println("Error attempting to access data from " + source);
+          return;
+        }
+        throw new InvalidArgumentException(
+            "Error attempting to access data from date. Please a date on or after "
+                + format.format(new Date(firstData.toGregorianCalendar().getTimeInMillis())),
             (Throwable) e);
       }
+      catch (WattDepotClientException e) {
+        throw new InvalidArgumentException("Error attempting to access data from " + source,
+            (Throwable) e);
+      }
+
       sortedEnergy.add(temp);
     }
 
