@@ -21,7 +21,7 @@ After checkout out the sources from SVN, or else downloading the distribution, y
  This will do the following:
 
  * Download Ivy.
- * Use Ivy to download packages required for compilation, including JUnit and WattDepot. 
+ * Use Ivy to download packages required for compilation, including JUnit and !WattDepot. 
  * Compile the system.
 
 == 2.2 Verify installation ==
