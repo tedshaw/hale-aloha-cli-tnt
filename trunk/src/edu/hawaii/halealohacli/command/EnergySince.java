@@ -11,15 +11,17 @@ import org.wattdepot.resource.sensordata.jaxb.SensorData;
 import org.wattdepot.util.tstamp.Tstamp;
 
 /**
- * Implement the energy-since Command interface. <br><br>
+ * Implement the energy-since Command interface. <br>
+ * <br>
  * 
  * Usage: energy-since [tower | lounge] [date] <br>
- * Returns the energy used since the date (yyyy-mm-dd) to now. <br><br>
+ * Returns the energy used since the date (yyyy-mm-dd) to now. <br>
+ * <br>
  * 
  * Note: <br>
  * Towers are: Mokihana, Ilima, Lehua, Lokelani <br>
- * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E.
- * For example, Mokihana-A.
+ * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E. For example,
+ * Mokihana-A.
  * 
  * @author Toy Lim
  */
@@ -28,7 +30,7 @@ public class EnergySince implements Command {
   private String commandSyntax;
   private String commandDescription;
   private WattDepotClient wattDepotClient;
-  
+
   /**
    * Default constructor.
    * 
@@ -51,7 +53,7 @@ public class EnergySince implements Command {
   public String toString() {
     return commandString;
   }
-  
+
   /**
    * Return the command syntax String.
    * 
@@ -105,8 +107,7 @@ public class EnergySince implements Command {
       Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 0);
       System.out.format("Total energy consumption by %s from %s to %s is: %.1f kWh\n", source,
           format.format(new Date(startTime.toGregorianCalendar().getTimeInMillis())),
-          format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())),
-          energy / 1000);
+          format.format(new Date(endTime.toGregorianCalendar().getTimeInMillis())), energy / 1000);
     }
     catch (BadXmlException e) {
       XMLGregorianCalendar firstData = null;
@@ -117,6 +118,7 @@ public class EnergySince implements Command {
         System.err.println("Error attempting to access data from " + source);
         return;
       }
+      format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
       throw new InvalidArgumentException(
           "Error attempting to access data from date. Please a date on or after "
               + format.format(new Date(firstData.toGregorianCalendar().getTimeInMillis())),
