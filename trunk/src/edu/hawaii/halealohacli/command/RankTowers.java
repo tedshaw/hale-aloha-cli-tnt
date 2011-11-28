@@ -148,12 +148,14 @@ public class RankTowers implements Command {
     }
     catch (Exception e) {
       System.out.println("Invalid date: " + start);
+      return;
     }
     try {
       endTime = Tstamp.makeTimestamp(end);
     }
     catch (Exception e) {
       System.out.println("Invalid date: " + end);
+      return;
     }
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
