@@ -21,7 +21,7 @@ After checkout out the sources from SVN, or else downloading the distribution, y
  This will do the following:
 
  * Download Ivy.
- * Use Ivy to download packages required for compilation, including JUnit and Robocode. 
+ * Use Ivy to download packages required for compilation, including JUnit and WattDepot. 
  * Compile the system.
 
 == 2.2 Verify installation ==
@@ -36,7 +36,7 @@ This command will run JUnit, Checkstyle, PMD, !JavaDoc, and !FindBugs, and fail 
 
 == 3.0 Development Guidelines ==
 
-Once you have verified your local installation of robocode-sht-michelangelo, you are ready for development.    We follow these development guidelines:
+Once you have verified your local installation of hale-aloha-cli-tnt, you are ready for development.    We follow these development guidelines:
 
   * We use Eclipse for development, and format the code using [http://ics-software-engineering.googlecode.com/svn/trunk/configfiles/eclipse.format.xml this format]. 
 
