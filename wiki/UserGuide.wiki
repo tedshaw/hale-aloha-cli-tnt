@@ -1,14 +1,14 @@
-#summary One-sentence summary of this page.
+#summary How to use the Hale Aloha CLI (Command Line Interface).
 #labels Featured
 
-= Introduction =
+*Table of Contents* 
+<wiki:toc max_depth="3" />
 
-Add your content here.
+= 1.0 Download =
+Please download the latest distribution of the Hale Aloha CLI from the [http://code.google.com/p/hale-aloha-cli-tnt/downloads/list Downloads] page.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= 2.0 Install =
+To install the Hale Aloha CLI, unzip the distribution.
+Open a command prompt, and go to the extracted hale-aloha-tnt directory.
+Type "java -jar hale-aloha-tnt" to run the CLI.
+Type "help" for a list of commands.
