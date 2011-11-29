@@ -13,7 +13,7 @@ Open a command prompt, and go to the extracted hale-aloha-cli-tnt directory.
 Type "java -jar hale-aloha-cli-tnt" to run the CLI.
 Type "help" for a list of commands.
 
-The following is a sample from a "help" input:
+The following is sample input and output:
 
 {{{
 % java -jar hale-aloha-cli.jar
