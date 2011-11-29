@@ -10,7 +10,7 @@ Please download the latest distribution of the Hale Aloha CLI from the [http://c
 = 2.0 Install =
 To install the Hale Aloha CLI, unzip the distribution.
 Open a command prompt, and go to the extracted hale-aloha-cli-tnt directory.
-Type "java -jar hale-aloha-cli-tnt" to run the CLI.
+Type "java -jar hale-aloha-cli.jar" to run the CLI.
 Type "help" for a list of commands.
 
 The following is sample input and output:
