@@ -116,7 +116,7 @@ public class DailyEnergy implements Command {
       }
       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
       throw new InvalidArgumentException(
-          "Error attempting to access data from date. Please a date on or after "
+          "Error attempting to access data from date. Please use a date on or after "
               + format.format(new Date(firstData.toGregorianCalendar().getTimeInMillis())),
           (Throwable) e);
     }
