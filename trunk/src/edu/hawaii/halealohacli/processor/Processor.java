@@ -9,7 +9,6 @@ import edu.hawaii.halealohacli.command.InvalidArgumentException;
  * Processing class.
  * 
  * @author Ted Shaw, Joshua Antonio
- * 
  */
 public class Processor {
   CommandManager manager;
@@ -62,8 +61,8 @@ public class Processor {
             commandInstance.execute(arguments);
           }
           catch (InvalidArgumentException e) {
-            System.out.println("Error: Invalid Syntax. Please use the following.");
-            System.out.println(commandInstance.getSyntax());
+            System.out.format("%s\n", e.getMessage());
+            System.out.format("Command Syntax: %s\n", commandInstance.getSyntax());
           }
         }
       }
