@@ -47,3 +47,5 @@ Once you have verified your local installation of hale-aloha-cli-tnt, you are re
   * Before committing changes, please make sure that "ant -f verify.build.xml" runs successfully. 
 
  * This project uses continuous integration under [http://dasha.ics.hawaii.edu:9859/job/hale-aloha-cli-tnt/ Jenkins]. Make sure your build verifies on the Jenkins page.
+
+ * If adding new commands, implement the Command interface. The command needs a constructer which passes a WattDepotClient.
