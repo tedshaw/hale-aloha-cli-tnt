@@ -15,7 +15,8 @@ Type "help" for a list of commands.
 
 The following is a sample from a "help" input:
 
-{{{% java -jar hale-aloha-cli.jar
+{{{
+% java -jar hale-aloha-cli.jar
 Connected successfully to the Hale Aloha WattDepot server.
 > current-power Ilima-A
 Ilima-A's power as of 2011-11-07 13:48:56 was 2.3 kW.
@@ -44,4 +45,5 @@ Terminates execution
 Note: towers are:  Mokihana, Ilima, Lehua, Lokelani
 Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E. For example, Mokihana-A.
 > quit
-%}}}
+%
+}}}
