@@ -91,7 +91,7 @@ public class CurrentPower implements Command {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         System.out.format("%s's power as of %s was %.1f kW.\n", source, 
             format.format(new Date(timestamp.toGregorianCalendar().getTimeInMillis())), 
-            data.getPropertyAsDouble("powerConsumed"));
+            data.getPropertyAsDouble(SensorData.POWER_CONSUMED) / 1000.0);
       }
       catch (WattDepotClientException e) {
         throw new InvalidArgumentException("Error attempting to access data from " + source, 
