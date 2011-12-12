@@ -32,7 +32,8 @@ public class TestCommandManager {
   @Test
   public void testGetCommands() {
     List<String> commandStrings =
-        Arrays.asList("current-power", "daily-energy", "energy-since", "rank-towers");
+        Arrays.asList("current-power", "daily-energy", "energy-since", "rank-towers", 
+                      "set-baseline");
     Command[] commands = manager.getCommands();
     for (Command command : commands) {
       if (!commandStrings.contains(command.toString())) {
