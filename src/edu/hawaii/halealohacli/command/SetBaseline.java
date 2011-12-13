@@ -19,7 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E. For example,
  * Mokihana-A.
  * 
- * @author Toy Lim
+ * @author Matthew Mizumoto
  */
 public class SetBaseline implements Command {
   private String commandString;
@@ -36,7 +36,7 @@ public class SetBaseline implements Command {
    */
   public SetBaseline(WattDepotClient client) {
     commandString = "set-baseline";
-    commandSyntax = commandString + " [tower | lounge]";
+    commandSyntax = commandString + " [tower | lounge] [date]";
     commandDescription =
         "Defines [date] as the baseline and obtains and saves "
             + "the amount of energy obtained hourly. \n"
