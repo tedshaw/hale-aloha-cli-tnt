@@ -98,9 +98,9 @@ public class MonitorGoal implements Command {
   @Override
   public void execute(String... args) throws InvalidArgumentException {
     final String[] arguments = args;
-    StringBuilder sb = checkAll(args);
+    String argsString = checkAll(args);
     // All the arguments are valid.
-    if (sb == null || sb.toString().isEmpty()) {
+    if (argsString == null || argsString.isEmpty()) {
       int interval = Integer.parseInt(args[2]);
 
       TimerTask task = new TimerTask() {
@@ -157,9 +157,23 @@ public class MonitorGoal implements Command {
       }
     }
     else {
-      System.err.println(sb.toString());
+      System.err.println(argsString);
     }
   } // end execute()
+  
+  
+  /**
+   * Method for checking the source argument.
+   * @param s The String to check.
+   * @return True if the given source is valid, and false otherwise.
+   */
+  public static boolean checkSource(String s) {
+    String regex = "^(Mokihana|Ilima|Lehua|Lokelani)([-][A-E])?$";
+    if (s.matches(regex)) {
+      return true;
+    }
+    return false;
+  } // end checkSource().
 
   
   /**
@@ -209,7 +223,7 @@ public class MonitorGoal implements Command {
    * @return A StringBuilder containing the errors raised, if any.
    * @throws InvalidArgumentException If an invalid number of arguments were given.
    */
-  public static StringBuilder checkAll(String[] args) throws InvalidArgumentException {
+  public static String checkAll(String[] args) throws InvalidArgumentException {
     if (args == null || args.length < 1) {
       throw new InvalidArgumentException("No argument is given.");
     }
@@ -219,9 +233,8 @@ public class MonitorGoal implements Command {
     String source = args[0];
     String goal = args[1];
     String interval = args[2];
-    String regex = "^(Mokihana|Ilima|Lehua|Lokelani)[-]?[A-E]?$";
     StringBuilder sb = new StringBuilder();
-    if (!source.matches(regex)) {
+    if (!checkSource(source)) {
       sb.append("Please enter a valid tower or lounge name. Type 'help' to see the available "
           + "options.\n");
     }
@@ -234,7 +247,7 @@ public class MonitorGoal implements Command {
     if (!SetBaseline.checkArray()) {
       sb.append("You must set the baseline first. Enter 'help' to learn how to do this.\n");
     }
-    return sb;
+    return sb.toString();
   } // end checkAll()
 
   /**
