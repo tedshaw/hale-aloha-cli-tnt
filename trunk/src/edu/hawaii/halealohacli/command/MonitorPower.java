@@ -7,6 +7,9 @@ import java.util.TimerTask;
 import org.wattdepot.client.WattDepotClient;
 
 /**
+ * Repeatedly prints the most recent power information for a particular tower or lounge.
+ * The interval between data defaults to 10 seconds, but can be changed by the user.
+ * 
  * @author Ardell Klemme
  * 
  */
@@ -19,9 +22,10 @@ public class MonitorPower implements Command {
 
   private static final int DEFAULT = 10000; // default to 10 seconds.
   private String interval = "10";
-  private int period = 10;
+  private int period;
   private Timer timer = new Timer();
   private InputStream input = System.in;
+  private boolean debug = false;
 
   /**
    * Default constructor.
@@ -135,7 +139,7 @@ public class MonitorPower implements Command {
 
     try {
       // task is running, enter loop to check for user input.
-      while (input.available() == 0) {
+      while (input.available() == 0 && !isDebug()) {
         try {
           Thread.sleep(100);
         }
@@ -160,15 +164,17 @@ public class MonitorPower implements Command {
       // catches InterrruptedException. don't do anything.
     }
 
-    try {
-      // clear input buffer so that we don't get an invalid command error!
-      while (input.available() > 0) {
-        input.read();
+    if (!isDebug()) {
+      try {
+        // clear input buffer so that we don't get an invalid command error!
+        while (input.available() > 0) {
+          input.read();
+        }
       }
-    }
-    catch (IOException e) {
-      // catches IOException. don't do anything.  
-      System.out.print("");
+      catch (IOException e) {
+        // catches IOException. don't do anything.  
+        System.out.print("");
+      }
     }
   }
 
@@ -181,4 +187,21 @@ public class MonitorPower implements Command {
     return power;
   }
 
+  /**
+   * Checks status of debug mode.
+   * 
+   * @return debug state, true or false.
+   */
+  public boolean isDebug() {
+    return debug;
+  }
+
+  /**
+   * Sets status of debug mode.
+   * 
+   * @param debug boolean value for whether or not to wait for user input in order to test.
+   */
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
 }
