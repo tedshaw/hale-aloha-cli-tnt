@@ -1,5 +1,7 @@
 package edu.hawaii.halealohacli.command;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.wattdepot.client.WattDepotClient;
@@ -15,6 +17,12 @@ public class MonitorPower implements Command {
   private String source;
   private CurrentPower power;
 
+  private static final int DEFAULT = 10000; // default to 10 seconds.
+  private String interval = "10";
+  private int period = 10;
+  private Timer timer = new Timer();
+  private InputStream input = System.in;
+
   /**
    * Default constructor.
    * 
@@ -27,9 +35,9 @@ public class MonitorPower implements Command {
     commandDescription =
         "This command prints out a timestamp and the current power for "
             + "[tower | lounge] every [interval] seconds.  [interval] is an "
-            + "optional argument and defaults to 10 seconds. Entering any "
-            + "character (such as a carriage return) stops this monitoring "
-            + "process and returns the user to the command loop.";
+            + "optional argument and defaults to 10 seconds. Hitting the "
+            + "Enter key stops this monitoring process and returns the user "
+            + "to the command loop.";
     WattDepotClient wattDepotClient = client;
     power = new CurrentPower(wattDepotClient);
   }
@@ -65,7 +73,7 @@ public class MonitorPower implements Command {
   public String getDescription() {
     return commandDescription;
   }
-  
+
   /**
    * Return the source.
    * 
@@ -84,40 +92,84 @@ public class MonitorPower implements Command {
    */
   @Override
   public void execute(String... args) throws InvalidArgumentException {
-    String interval = "";
-    Long period = (long) 10;
-    Timer timer = new Timer();
     if (args == null || args.length < 1) {
       throw new InvalidArgumentException("No argument is given.");
     }
     source = args[0];
     if (args.length < 2) {
-      interval = "10";
+      // user didn't specify an interval.
+      period = DEFAULT;
     }
     else {
       interval = args[1];
     }
 
     try {
-      period = Long.valueOf(interval.trim()) * 1000;
+      period = Integer.valueOf(interval.trim()) * 1000;
     }
     catch (Exception e) {
-      //throw new Exception("Unable to parse interval from argument.");
-      System.out.println("Unable to parse interval from argument.");
+      // non-integer entered for interval...change to default time.
+      period = DEFAULT;
+      System.out.println("Unable to parse interval from argument, "
+          + "using default (10 seconds) interval.");
     }
-    
-    timer.scheduleAtFixedRate(new TimerTask() {
-      
+
+    TimerTask task = new TimerTask() {
+
+      // internal run method for task
       public void run() {
-          try {
-            power.execute(source);
-          }
-          catch (InvalidArgumentException e) {
-            e.printStackTrace();
-          }                
-      } //end run()
-      
-    }, 0, period); //end TimerTask()
+
+        try {
+          power.execute(source);
+        }
+        catch (InvalidArgumentException e) {
+          // problem accessing power information. Need to stop task.
+          System.out.println("Unable to get current power data from source, "
+              + "hit Enter to continue.");
+          cancel();
+        }
+      }
+    };
+
+    timer.scheduleAtFixedRate(task, 0, period);
+
+    try {
+      // task is running, enter loop to check for user input.
+      while (input.available() == 0) {
+        try {
+          Thread.sleep(100);
+        }
+        catch (InterruptedException e) {
+          // catch InterruptedException. don't do anything.
+        }
+      }
+    }
+    catch (IOException e) {
+      // catches IOException, issue with input stream.
+      System.out.println("Unfortunately, there was a problem with the input stream. "
+          + "Please choose another command.");
+    }
+
+    // loop finished, either user cancelled or issue with input stream, cancel task.
+    task.cancel();
+
+    try {
+      Thread.sleep(300);
+    }
+    catch (InterruptedException e) {
+      // catches InterrruptedException. don't do anything.
+    }
+
+    try {
+      // clear input buffer so that we don't get an invalid command error!
+      while (input.available() > 0) {
+        input.read();
+      }
+    }
+    catch (IOException e) {
+      // catches IOException. don't do anything.  
+      System.out.print("");
+    }
   }
 
   /**
@@ -128,5 +180,5 @@ public class MonitorPower implements Command {
   public CurrentPower getPower() {
     return power;
   }
-  
+
 }
