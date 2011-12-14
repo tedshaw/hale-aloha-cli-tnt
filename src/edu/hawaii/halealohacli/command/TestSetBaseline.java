@@ -14,7 +14,7 @@ import org.wattdepot.client.WattDepotClient;
  * Lounges are the tower names followed by a "-" followed by one of A, B, C, D, E. For example,
  * Mokihana-A.
  * 
- * @author Toy Lim
+ * @author Matthew Mizumoto
  */
 public class TestSetBaseline {
   private static String commandString;
