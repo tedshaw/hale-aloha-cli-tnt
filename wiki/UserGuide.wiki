@@ -38,8 +38,15 @@ daily-energy [tower | lounge] [date]
 Returns the energy in kWh used by the tower or lounge for the specified date (yyyy-mm-dd).
 energy-since [tower | lounge] [date]
 Returns the energy used since the date (yyyy-mm-dd) to now.
+monitor-goal [tower | lounge] goal interval
+Every [interval] seconds, prints out a timestamp, the current power being consumed by the [tower | lounge], and whether or not the lounge is meeting its power conservation goal.
+monitor-power [tower | lounge] [interval]
+This command prints out a timestamp and the current power for [tower | lounge] every [interval] seconds.  [interval] is an optional argument and defaults to 10 seconds. Hitting the Enter key stops this monitoring process and returns the user to the command loop.
 rank-towers [start] [end]
 Returns a list in sorted order from least to most energy consumed between the [start] and [end] date (yyyy-mm-dd)
+set-baseline [tower | lounge] [date]
+Defines [date] as the baseline and obtains and saves the amount of energy obtained hourly. 
+The [date] parameter is optional and defaults to yesterday if excluded.
 quit
 Terminates execution
 Note: towers are:  Mokihana, Ilima, Lehua, Lokelani
