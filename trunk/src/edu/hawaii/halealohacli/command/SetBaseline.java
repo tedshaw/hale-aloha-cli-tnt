@@ -122,8 +122,8 @@ public class SetBaseline implements Command {
 
         Double energy = wattDepotClient.getEnergyConsumed(source, startTime, endTime, 0);
         baselines[i] = energy;
-        System.out.println("baseline " + i + ": " + baselines[i] / 1000);
-        System.out.println();
+//      System.out.format("%s:%s to %s:%s: %.1f kWh\n", startTime.getHour(), startTime.getMinute(),
+//          endTime.getHour(), endTime.getMinute(), baselines[i] / 1000);
       }
     }
     catch (WattDepotClientException e) {
@@ -131,7 +131,7 @@ public class SetBaseline implements Command {
           (Throwable) e);
     }
     
-    System.out.print(SetBaseline.checkArray());
+//    System.out.println(SetBaseline.checkArray());
   }
 
   /**
@@ -140,7 +140,7 @@ public class SetBaseline implements Command {
    * @return true if the baselines have been set
    */
   public static boolean checkArray() {
-    if (String.valueOf(baselines[0]).equals("")) {
+    if (baselines == null || baselines[0] <= 0) {
       return false;
     }
       return true;
