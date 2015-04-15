@@ -1,0 +1,1 @@
+Command line interface program to help understand various aspects of energy use in the Hale Aloha residence halls.  This program uses [WattDepot](http://code.google.com/p/wattdepot/) to retrieve energy information.
